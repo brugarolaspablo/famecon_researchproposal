@@ -1,4 +1,6 @@
-# famecon_researchproposal
+# Research proposal project: Population and Family Economics
+
+
 This repository will allow you to replicate my work, using data from https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/4TTCEY.
 
 
