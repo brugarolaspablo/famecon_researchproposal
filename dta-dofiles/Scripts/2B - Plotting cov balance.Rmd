@@ -1,0 +1,126 @@
+---
+title: "2B - Love plots"
+author: "Pablo Brugarolas"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+mail: "brugarolaspablo@gmail.com"
+
+output:
+    epuRate::epurate:
+    toc: TRUE
+    number_sections: FALSE
+    code_folding: "hide"
+ 
+---
+
+
+<br><br>
+
+
+
+# Get the data
+***
+
+
+```{r, message=FALSE, warning=FALSE}
+set.seed(1000)
+
+# It is a good practice to load all the packages at the same time. It allows to know exactly what is needed to reproduce your analysis.
+
+library(tidyverse)
+library(rmarkdown)    # You need this library to run this template.
+library(epuRate)      # Install with devtools: install_github("holtzy/epuRate", force=TRUE)
+library(haven)        # Needed to load dta files
+library(foreign)      # Needed to export R dataframes to Stata
+
+library("cobalt")     # Needed to show balance tables
+library(ggplot2)      # Needed to create awesome plots in R
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+# read dta and store it in a df called df.all
+
+df.all <- read_dta( "/Users/pablobrugarolas/Documents/Cloud/2020-21/MILE msc/FIRST TERM/FAM ECONOMICS/Research proposal/do-dta files/Data/FieldExp_Public_cleaned_plot.dta")
+
+
+
+
+
+# store covs
+covs <- subset(df.all, select = c(occupation1, occupation2, occupation3, occupation4, occupation5, occupation6, nmsa1, nmsa2, nmsa3, nmsa4, nmsa5, nmsa6, nmsa7, nmsa8, nmsa9, nmsa10, nmsa11, nmsa12, nmsa13, nmsa14, nmsa15, nmsa16, nmsa17, nmsa18, nmsa19, nmsa20))
+
+
+```
+
+# Love plots
+***
+
+
+```{r plots A, warning=FALSE}
+
+library(ggplot2)
+
+
+# prepare labels 
+l.exp <- data.frame(old = c("occupation1", "occupation2","occupation3", "occupation4", "occupation5", "occupation6","nmsa1", "nmsa2", "nmsa3", "nmsa4","nmsa5", "nmsa6","nmsa7", "nmsa8", "nmsa9", "nmsa10","nmsa11", "nmsa12", "nmsa13", "nmsa14","nmsa15","nmsa16", "nmsa17", "nmsa18", "nmsa19", "nmsa20"), 
+                      new = c("Administrative Assistant", "Cook", "Customer Service", "High Skilled Sales", "Low   Skilled Sales", "Software Developer", "Atlanta", "Baltimore", "Boston", "Charlotte","Cincinnati", "Chicago", "Dallas", "Denver", "Detroit", "Las Vegas", "Los Angeles", "Miami", "Minneapolis", "New York","Philadelphia","Phoenix", "Portland", "Seattle", "St. Louis", "Washington DC"))
+
+
+# PLOT A: WOMEN
+
+plot.unajusted_A <- love.plot(woman ~ covs, data = df.all,
+         line = TRUE, colors= c("#94b8db"), stars = "std",  limits = c(-0.1,0.1), var.names = l.exp,
+         title = "T1 - Woman-sounding name")
+
+
+plot.unajusted_A <- plot.unajusted_A + geom_vline(xintercept=c(-0.05,0.05), linetype="dotted") + labs(subtitle = NULL) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_text(size = 9, family = "Helvetica Neue"),
+        legend.text = element_text(size = 9, family = "Helvetica Neue"))
+# plot it
+plot.unajusted_A
+
+# PLOT B: PARENT
+
+plot.unajusted_B <- love.plot(parent ~ covs, data = df.all,
+         line = TRUE, colors= c("#e7dba0"), stars = "std",  limits = c(-0.1,0.1), var.names = l.exp,
+         title = "T2 - Application signaled being a parent")
+
+
+plot.unajusted_B <- plot.unajusted_B + geom_vline(xintercept=c(-0.05,0.05), linetype="dotted") + labs(subtitle = NULL) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_text(size = 9, family = "Helvetica Neue"),
+        legend.text = element_text(size = 9, family = "Helvetica Neue"))
+# plot it
+plot.unajusted_B
+
+# PLOT C: BLACK
+
+plot.unajusted_C <- love.plot(black ~ covs, data = df.all,
+         line = TRUE, colors= c("#7cc3b8"), stars = "std",  limits = c(-0.1,0.1), var.names = l.exp,
+         title = "T3 - African American- sounding name")
+
+
+plot.unajusted_C <- plot.unajusted_C + geom_vline(xintercept=c(-0.05,0.05), linetype="dotted") + labs(subtitle = NULL) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_text(size = 9, family = "Helvetica Neue"),
+        legend.text = element_text(size = 9, family = "Helvetica Neue"))
+# plot it
+plot.unajusted_C
+
+
+
+
+setwd("/Users/pablobrugarolas/Documents/Cloud/2020-21/MILE msc/FIRST TERM/FAM ECONOMICS/Research proposal/do-dta files/Results/Figures")
+
+
+ggsave(filename="Figure 1A.png", plot=plot.unajusted_A, device="png",
+       height=5.65, width=7.38, units="in", dpi=500)
+ggsave(filename="Figure 1B.png", plot=plot.unajusted_B, device="png",
+       height=5.65, width=7.38, units="in", dpi=500)
+ggsave(filename="Figure 1C.png", plot=plot.unajusted_C, device="png",
+       height=5.65, width=7.38, units="in", dpi=500)
+
+```
+    
