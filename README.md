@@ -4,4 +4,7 @@ This repository will allow you to replicate my work, using data from https://dat
 
 Please, cite his work if you use any of this analysis. 
 
+
+To replicate the materials, just download them and place them in the Data folder.
+
 All errors here are mine alone.
